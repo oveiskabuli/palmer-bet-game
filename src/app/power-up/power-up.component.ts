@@ -29,7 +29,6 @@ export class PowerUpComponent implements AfterViewInit {
   unityInstance: any;
   betId?: string;
   baseUrl?: string;
-  token?: string;
 
   constructor(
     private _renderer: Renderer2,
@@ -39,7 +38,6 @@ export class PowerUpComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     this.betId = this._activatedRoute.snapshot.queryParams['betId'];
     this.baseUrl = this._activatedRoute.snapshot.queryParams['baseUrl'];
-    this.token = this._activatedRoute.snapshot.queryParams['token'];
     this._renderer.setStyle(
       this.gameLoadingBar?.nativeElement,
       'display',
@@ -98,7 +96,7 @@ export class PowerUpComponent implements AfterViewInit {
       // this base url is used by game to make start game and end game api calls
       const baseURL = this.baseUrl + '/';
       const betId = this.betId;
-      const authorizationToken = this.token;
+      const authorizationToken = localStorage.getItem('jwt');
 
       const obj = {
         baseURL,
