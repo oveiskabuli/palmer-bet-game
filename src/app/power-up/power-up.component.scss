@@ -1,0 +1,44 @@
+.container {
+  background: #333333;
+  width: 288px;
+  height: 512px;
+  // @include mq("medium") {
+  //   width: 366px;
+  //   height: 650px;
+  // }
+
+  .canvas {
+    position: absolute;
+    width: 288px;
+    height: 512px;
+    // @include mq("medium") {
+    //   width: 366px;
+    //   height: 650px;
+    // }
+  }
+
+  .loading-bar {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: none;
+
+    .progress-bar-empty {
+      width: 141px;
+      height: 18px;
+      margin-top: 10px;
+      margin-left: 6.5px;
+      background: url("/assets/power-up-game/progress-bar-empty-dark.png")
+        no-repeat center;
+
+      .progress-bar-full {
+        width: 0%;
+        height: 18px;
+        margin-top: 10px;
+        background: url("/assets/power-up-game/progress-bar-full-dark.png")
+          no-repeat center;
+      }
+    }
+  }
+}
