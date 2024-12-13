@@ -52,9 +52,9 @@ export class PowerUpComponent implements AfterViewInit {
   private loadGameScript(): HTMLScriptElement {
     const buildUrl = 'assets/power-up-game/Build';
     const config = {
-      dataUrl: buildUrl + '/palmBet.data',
-      frameworkUrl: buildUrl + '/palmBet.framework.js',
-      codeUrl: buildUrl + '/palmBet.wasm',
+      dataUrl: buildUrl + '/palmerbet.data.unityweb',
+      frameworkUrl: buildUrl + '/palmerbet.framework.js.unityweb',
+      codeUrl: buildUrl + '/palmerbet.wasm.unityweb',
       streamingAssetsUrl: 'StreamingAssets',
       companyName: 'FanStudio',
       productName: 'UnityPalmerbet',
@@ -63,7 +63,7 @@ export class PowerUpComponent implements AfterViewInit {
     const script = document.createElement('script');
     script.async = false;
     script.type = 'text/javascript';
-    script.src = 'assets/power-up-game/Build/palmBet.loader.js';
+    script.src = 'assets/power-up-game/Build/palmerbet.loader.js';
     script.onload = () => {
       createUnityInstance(
         this.gameCanvas?.nativeElement,
