@@ -2,7 +2,6 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
-  OnInit,
   Renderer2,
   ViewChild,
 } from '@angular/core';
@@ -24,8 +23,6 @@ declare function createUnityInstance(a: any, b: any, c: any): any;
 export class PowerUpComponent implements AfterViewInit {
   @ViewChild('gameContainer') gameContainer?: ElementRef;
   @ViewChild('gameCanvas') gameCanvas?: ElementRef;
-  @ViewChild('gameLoadingBar') gameLoadingBar?: ElementRef;
-  @ViewChild('gameProgressBarFull') gameProgressBarFull?: ElementRef;
   unityInstance: any;
   betId?: string;
   baseUrl?: string;
@@ -40,11 +37,6 @@ export class PowerUpComponent implements AfterViewInit {
     this.betId = this._activatedRoute.snapshot.queryParams['betId'];
     this.baseUrl = this._activatedRoute.snapshot.queryParams['baseUrl'];
     this.token = this._activatedRoute.snapshot.queryParams['token'];
-    this._renderer.setStyle(
-      this.gameLoadingBar?.nativeElement,
-      'display',
-      'block'
-    );
     const script = this.loadGameScript();
     this.gameContainer?.nativeElement?.appendChild(script);
   }
@@ -65,24 +57,8 @@ export class PowerUpComponent implements AfterViewInit {
     script.type = 'text/javascript';
     script.src = 'assets/power-up-game/Build/palmerbet.loader.js';
     script.onload = () => {
-      createUnityInstance(
-        this.gameCanvas?.nativeElement,
-        config,
-        (progress: any) => {
-          const width = 100 * progress + '%';
-          this._renderer.setStyle(
-            this.gameProgressBarFull?.nativeElement,
-            'width',
-            width
-          );
-        }
-      )
+      createUnityInstance(this.gameCanvas?.nativeElement, config, () => {})
         .then((unityInstance: any) => {
-          this._renderer.setStyle(
-            this.gameLoadingBar?.nativeElement,
-            'display',
-            'none'
-          );
           this.unityInstance = unityInstance;
           window.handleUnityMessage = this.handleUnityMessage.bind(this);
         })
@@ -95,16 +71,12 @@ export class PowerUpComponent implements AfterViewInit {
 
   private handleUnityMessage(message: string): void {
     if (message === 'gameInfo') {
-      // this base url is used by game to make start game and end game api calls
-      const baseURL = this.baseUrl + '/';
-      const betId = this.betId;
-      const authorizationToken = this.token;
-
+      // base url is used by game to make start game and end game api calls
       const obj = {
-        baseURL,
+        baseURL: this.baseUrl + '/',
         gameType: 'PowerUp',
-        betId,
-        authorizationToken,
+        betId: this.betId,
+        authorizationToken: this.token,
       };
 
       const message = JSON.stringify(obj);
